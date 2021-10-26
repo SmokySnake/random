@@ -31,6 +31,9 @@ scp user@server:/home/user/file.txt ~/destinationfile.txt
 scp ~/file.txt user@server:/home/user/destinationfile.txt
 wget <http://www.url.com/file.txt>
 curl <http://www.url.com/file.txt>
+nc -lvnp <port> > <newfile>
+nc <ip> <port> < <oldfile>	OR
+cat <oldfile> | nc <ip> <port>
 cat <file1>
 cat <file1> <file2>
 head <file1>
